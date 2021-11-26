@@ -16,9 +16,7 @@ export class JogadoresService {
   ) {}
 
   async procurarJogadorPeloId(id: string): Promise<Jogador> {
-    const jogadorEncontrado = await this.jogadorModel
-      .findOne({ _id: id })
-      .exec();
+    const jogadorEncontrado = await this.jogadorModel.findOne({ _id: id });
 
     if (!jogadorEncontrado) {
       throw new NotFoundException(`Jogador com id ${id} não encontrado`);
@@ -30,7 +28,7 @@ export class JogadoresService {
   async criarJogador(criaJogadorDto: CriarJogadorDto): Promise<Jogador> {
     const { email } = criaJogadorDto;
 
-    const jogadorEncontrado = await this.jogadorModel.findOne({ email }).exec();
+    const jogadorEncontrado = await this.jogadorModel.findOne({ email });
 
     if (jogadorEncontrado) {
       throw new BadRequestException(
@@ -49,13 +47,14 @@ export class JogadoresService {
   ): Promise<void> {
     await this.procurarJogadorPeloId(id);
 
-    await this.jogadorModel
-      .findOneAndUpdate({ _id: id }, { $set: atualizaJogadorDto })
-      .exec();
+    await this.jogadorModel.findOneAndUpdate(
+      { _id: id },
+      { $set: atualizaJogadorDto },
+    );
   }
 
   async consultarTodosJogadores(): Promise<Jogador[]> {
-    return await this.jogadorModel.find().exec();
+    return await this.jogadorModel.find();
   }
 
   async consultarJogadorPeloId(id: string): Promise<Jogador> {
@@ -67,6 +66,6 @@ export class JogadoresService {
   async deletarJogador(id: string): Promise<any> {
     await this.procurarJogadorPeloId(id);
 
-    return await this.jogadorModel.deleteOne({ _id: id }).exec();
+    return await this.jogadorModel.deleteOne({ _id: id });
   }
 }
